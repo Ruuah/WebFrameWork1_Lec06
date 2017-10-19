@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+
+	<!-- Dependency Injection -->
+	<bean id="id_dog" class="kr.ac.hansung.spring.aop.Dog">
+		<property name="myName" value="poodle"></property>
+		<qualifier value="qf_dog"></qualifier>
+	</bean>
+
+	<bean id="id_cat" class="kr.ac.hansung.spring.aop.Cat">
+		<property name="myName" value="bella"></property>
+		<qualifier value="qf_cat"></qualifier>
+	</bean>
+
+	<bean id="id_owner" class="kr.ac.hansung.spring.aop.PetOwner">
+		<!-- dependency injection Using xml -->
+		<constructor-arg ref="id_cat"></constructor-arg>
+	</bean>
+
+	<!-- Use annotation-config -->
+	<context:annotation-config></context:annotation-config>
+	
+	<!-- Dependency Injection Using annotation (Look PetOwner2.java) -->
+	<bean id="id_owner2" class="kr.ac.hansung.spring.aop.PetOwner2"></bean>
+	
+		
+	<!-- Aspect Oriented Programming -->
+	<bean id="id_logger" class="kr.ac.hansung.spring.aop.Logger"></bean>
+	<aop:config>
+		<aop:aspect ref="id_logger">
+			<aop:pointcut expression="execution( void kr.ac.hansung.spring.aop.*.sound() )"
+				id="selectSound" />
+			<aop:before method="aboutToSound" pointcut-ref="selectSound" />
+		</aop:aspect>
+	</aop:config>
+
+	<!-- Use annotation-config -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<!-- Aspect Oriented Programming Using annotation (Look Logger2.java) -->
+	<bean id="id_logger2" class="kr.ac.hansung.spring.aop.Logger2"></bean>
+	
+</beans>
